@@ -1,0 +1,34 @@
+--sql queries for synapse analytics in azure project for tokyo dtaa analysis
+
+select * from Medals;
+
+-- Identify countries with the most participants.
+select Country,count(PersonName) as no_of_participates from Athletes
+group by (Country)ORDER by no_of_participates DESC  ;
+
+--Rank the top-performing countries.
+SELECT TOP 4
+    TeamCountry,Gold,Total as top_performer from medals 
+    ORDER by Gold DESC ;
+
+
+--Identify the most popular sports in the Tokyo Olympics
+
+SELECT 
+    COUNT(DISTINCT Team_Name) AS no_of_teams, 
+    Discipline
+FROM Teams
+GROUP BY Discipline
+ORDER BY no_of_teams DESC;
+
+--Analyze gender representation in each sport.
+select sum(Distinct Female)total_female,sum(Distinct Male) total_male
+from EntriesGender;
+
+--Identify top coaches who worked with multiple teams.
+Select Name ,count(Distinct Country)as teams_count
+from Coaches 
+GROUP by Name
+HAVING COUNT(DISTINCT Country) > 1
+order by teams_count desc;
+
